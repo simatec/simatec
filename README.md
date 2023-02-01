@@ -7,4 +7,5 @@ I am one of the developers of the smart home automation software [ioBroker](http
 If you want to support me, you can:
 
 [Sponsor me](https://github.com/sponsors/simatec/)
+
 [Paypal me](https://paypal.me/mk1676)
