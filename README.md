@@ -11,6 +11,4 @@ My goal with all this work is to provide the best possible quality for users and
 
 If you want to support me, you can:
 
-[Sponsor me](https://github.com/sponsors/simatec/)
-
-[Paypal me](https://paypal.me/mk1676)
+[![Donate](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://paypal.me/mk1676) [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/simatec)
