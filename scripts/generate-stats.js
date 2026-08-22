@@ -59,37 +59,42 @@ function graphql(query, variables) {
   });
 }
 
-// Ruft die npm-Downloadzahlen des letzten Monats für ein Paket ab.
-// Gibt null zurück, wenn kein npm-Paket mit diesem Namen existiert
-// (z. B. bei Repos, die nicht als npm-Paket veröffentlicht sind).
-function fetchNpmDownloads(packageName) {
+// Ruft die offizielle ioBroker-Adapterstatistik einmalig ab.
+// Enthält u. a. { adapters: { backitup: 4210, shuttercontrol: 1400, ... } }
+// mit der Anzahl tatsächlicher Installationen je Adapter.
+function fetchIoBrokerStatistics() {
   const options = {
-    hostname: 'api.npmjs.org',
-    path: `/downloads/point/last-month/${encodeURIComponent(packageName)}`,
+    hostname: 'iobroker.live',
+    path: '/statistics.json',
     method: 'GET',
     headers: { 'User-Agent': 'github-stats-card' },
   };
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {
       let data = '';
       res.on('data', (chunk) => (data += chunk));
       res.on('end', () => {
         if (res.statusCode !== 200) {
-          resolve(null);
+          reject(new Error(`ioBroker-Statistik nicht erreichbar: ${res.statusCode}`));
           return;
         }
         try {
-          const json = JSON.parse(data);
-          resolve(typeof json.downloads === 'number' ? json.downloads : null);
-        } catch {
-          resolve(null);
+          resolve(JSON.parse(data));
+        } catch (err) {
+          reject(err);
         }
       });
     });
-    req.on('error', () => resolve(null));
+    req.on('error', reject);
     req.end();
   });
+}
+
+// Leitet aus einem GitHub-Repo-Namen den ioBroker-Adapter-Key ab,
+// z. B. "ioBroker.backitup" -> "backitup".
+function repoNameToAdapterKey(repoName) {
+  return repoName.replace(/^iobroker\./i, '').toLowerCase();
 }
 
 const QUERY = `
@@ -220,7 +225,7 @@ function buildSvg(stats) {
   let repoRows = '';
   stats.topRepos.forEach((repo, i) => {
     const rowY = listTop + 24 + i * rowHeight;
-    const installsLabel = repo.installs === null ? '–' : `${formatCount(repo.installs)}/Monat`;
+    const installsLabel = repo.installs === null ? '–' : formatCount(repo.installs);
     repoRows += `
       <text x="24" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, nameMaxChars))}</text>
       <text x="${starsColX}" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ ${formatCount(repo.stars)}</text>
@@ -232,7 +237,7 @@ function buildSvg(stats) {
 
   return `<svg width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img">
   <title>GitHub-Stats für ${escapeXml(stats.login)}</title>
-  <desc>Repos, Sterne, Commits, Follower, Top-Sprachen und Top-5-Repos mit npm-Installationen</desc>
+  <desc>Repos, Sterne, Commits, Follower, Top-Sprachen und Top-5-Repos nach ioBroker-Installationen</desc>
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
 
   <text x="24" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(stats.name || stats.login)}</text>
@@ -263,16 +268,25 @@ async function main() {
 
   const repoNodes = user.repositories.nodes;
 
-  // Installationen (npm-Downloads) für ALLE Repos abrufen, damit die
-  // Sortierung nach Installationen korrekt ist statt nur eine
-  // sternebasierte Vorauswahl zu verfeinern.
-  const reposWithInstalls = await Promise.all(
-    repoNodes.map(async (repo) => ({
+  let adapterInstalls = {};
+  try {
+    const statistics = await fetchIoBrokerStatistics();
+    adapterInstalls = statistics.adapters || {};
+  } catch (err) {
+    console.warn(`ioBroker-Statistik konnte nicht geladen werden: ${err.message}`);
+  }
+
+  const reposWithInstalls = repoNodes.map((repo) => {
+    const adapterKey = repoNameToAdapterKey(repo.name);
+    const installs = Object.prototype.hasOwnProperty.call(adapterInstalls, adapterKey)
+      ? adapterInstalls[adapterKey]
+      : null;
+    return {
       name: repo.name,
       stars: repo.stargazerCount,
-      installs: await fetchNpmDownloads(repo.name.toLowerCase()),
-    }))
-  );
+      installs,
+    };
+  });
 
   const topRepos = [...reposWithInstalls]
     .sort((a, b) => (b.installs ?? -1) - (a.installs ?? -1))
