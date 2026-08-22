@@ -1,56 +1,56 @@
-<svg width="810" height="483" viewBox="0 0 600 358" xmlns="http://www.w3.org/2000/svg" role="img">
+<svg width="918" height="535" viewBox="0 0 680 396" xmlns="http://www.w3.org/2000/svg" role="img">
   <title>GitHub-Stats für simatec</title>
   <desc>Repos, Sterne, Commits, Follower, Top-Sprachen und Top-5-Repos nach ioBroker-Installationen</desc>
-  <rect x="0.5" y="0.5" width="599" height="357" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
+  <rect x="0.5" y="0.5" width="679" height="395" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
 
   <text x="24" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">simatec</text>
   <text x="24" y="58" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">@simatec</text>
 
   
       <g transform="translate(24,80)">
-        <rect width="132" height="56" rx="8" fill="#E1F5EE"/>
+        <rect width="146" height="56" rx="8" fill="#E1F5EE"/>
         <text x="12" y="24" font-size="11" fill="#1D9E75" font-family="Helvetica, Arial, sans-serif">Repos</text>
         <text x="12" y="44" font-size="20" font-weight="600" fill="#1D9E75" font-family="Helvetica, Arial, sans-serif">14</text>
       </g>
-      <g transform="translate(172,80)">
-        <rect width="132" height="56" rx="8" fill="#EEEDFE"/>
+      <g transform="translate(186,80)">
+        <rect width="146" height="56" rx="8" fill="#EEEDFE"/>
         <text x="12" y="24" font-size="11" fill="#534AB7" font-family="Helvetica, Arial, sans-serif">Sterne</text>
         <text x="12" y="44" font-size="20" font-weight="600" fill="#534AB7" font-family="Helvetica, Arial, sans-serif">213</text>
       </g>
-      <g transform="translate(320,80)">
-        <rect width="132" height="56" rx="8" fill="#FAECE7"/>
+      <g transform="translate(348,80)">
+        <rect width="146" height="56" rx="8" fill="#FAECE7"/>
         <text x="12" y="24" font-size="11" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">Commits</text>
-        <text x="12" y="44" font-size="20" font-weight="600" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">692</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">691</text>
       </g>
-      <g transform="translate(468,80)">
-        <rect width="132" height="56" rx="8" fill="#FBEAF0"/>
+      <g transform="translate(510,80)">
+        <rect width="146" height="56" rx="8" fill="#FBEAF0"/>
         <text x="12" y="24" font-size="11" fill="#993556" font-family="Helvetica, Arial, sans-serif">Follower</text>
         <text x="12" y="44" font-size="20" font-weight="600" fill="#993556" font-family="Helvetica, Arial, sans-serif">23</text>
       </g>
 
   <text x="24" y="168" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top Sprachen</text>
-  <rect x="24" y="176" width="280" height="8" rx="4" fill="#eeeeee"/>
-  <rect x="24" y="176" width="129" height="8" rx="4" fill="#378ADD"/><rect x="153" y="176" width="123" height="8" rx="4" fill="#EF9F27"/><rect x="276" y="176" width="17" height="8" rx="4" fill="#D85A30"/>
-  <text x="320" y="182" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">TypeScript 46%  ·  JavaScript 44%  ·  HTML 6%</text>
+  <rect x="24" y="176" width="632" height="8" rx="4" fill="#eeeeee"/>
+  <rect x="24" y="176" width="291" height="8" rx="4" fill="#378ADD"/><rect x="315" y="176" width="278" height="8" rx="4" fill="#EF9F27"/><rect x="593" y="176" width="38" height="8" rx="4" fill="#D85A30"/>
+  <text x="24" y="214" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">TypeScript 46%  ·  JavaScript 44%  ·  HTML 6%</text>
 
-  <line x1="24" y1="200" x2="576" y2="200" stroke="#e5e5e0" stroke-width="1"/>
-  <text x="24" y="216" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
-  <text x="440" y="216" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
-  <text x="576" y="216" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
+  <line x1="24" y1="238" x2="656" y2="238" stroke="#e5e5e0" stroke-width="1"/>
+  <text x="24" y="254" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
+  <text x="500" y="254" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
+  <text x="656" y="254" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
   
-      <text x="24" y="232" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.backitup</text>
-      <text x="440" y="232" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 72</text>
-      <text x="576" y="232" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">53.2k</text><line x1="24" y1="240" x2="576" y2="240" stroke="#f0f0ec" stroke-width="1"/>
-      <text x="24" y="254" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.shuttercontrol</text>
-      <text x="440" y="254" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 46</text>
-      <text x="576" y="254" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">2.7k</text><line x1="24" y1="262" x2="576" y2="262" stroke="#f0f0ec" stroke-width="1"/>
-      <text x="24" y="276" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.schoolfree</text>
-      <text x="440" y="276" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 7</text>
-      <text x="576" y="276" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">1.5k</text><line x1="24" y1="284" x2="576" y2="284" stroke="#f0f0ec" stroke-width="1"/>
-      <text x="24" y="298" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.solax</text>
-      <text x="440" y="298" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 18</text>
-      <text x="576" y="298" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">619</text><line x1="24" y1="306" x2="576" y2="306" stroke="#f0f0ec" stroke-width="1"/>
-      <text x="24" y="320" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.pegelalarm</text>
-      <text x="440" y="320" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 1</text>
-      <text x="576" y="320" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">500</text>
+      <text x="24" y="270" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.backitup</text>
+      <text x="500" y="270" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 72</text>
+      <text x="656" y="270" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">53.2k</text><line x1="24" y1="278" x2="656" y2="278" stroke="#f0f0ec" stroke-width="1"/>
+      <text x="24" y="292" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.shuttercontrol</text>
+      <text x="500" y="292" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 46</text>
+      <text x="656" y="292" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">2.7k</text><line x1="24" y1="300" x2="656" y2="300" stroke="#f0f0ec" stroke-width="1"/>
+      <text x="24" y="314" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.schoolfree</text>
+      <text x="500" y="314" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 7</text>
+      <text x="656" y="314" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">1.5k</text><line x1="24" y1="322" x2="656" y2="322" stroke="#f0f0ec" stroke-width="1"/>
+      <text x="24" y="336" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.solax</text>
+      <text x="500" y="336" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 18</text>
+      <text x="656" y="336" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">619</text><line x1="24" y1="344" x2="656" y2="344" stroke="#f0f0ec" stroke-width="1"/>
+      <text x="24" y="358" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.pegelalarm</text>
+      <text x="500" y="358" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 1</text>
+      <text x="656" y="358" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">500</text>
 </svg>
