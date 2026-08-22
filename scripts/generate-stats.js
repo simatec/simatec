@@ -172,20 +172,22 @@ function truncate(str, maxLen) {
 const LANG_COLORS = ['#378ADD', '#EF9F27', '#D85A30'];
 
 function buildSvg(stats) {
-  const width = 600;
+  const width = 680;
+  const margin = 24;
   const rowHeight = 22;
-  const listTop = 208;
+  const langLabelY = 214;
+  const listTop = 246;
   const height = listTop + 24 + stats.topRepos.length * rowHeight + 16;
   const scale = 1.35;
   const displayWidth = Math.round(width * scale);
   const displayHeight = Math.round(height * scale);
-  const barX = 24;
-  const barWidth = 280;
+  const barX = margin;
+  const barWidth = width - margin * 2;
   const barY = 176;
   const barHeight = 8;
-  const starsColX = width - 160;
-  const installsColX = width - 24;
-  const nameMaxChars = 38;
+  const starsColX = width - 180;
+  const installsColX = width - margin;
+  const nameMaxChars = 46;
 
   let langBars = '';
   let cursor = barX;
@@ -207,13 +209,14 @@ function buildSvg(stats) {
     { label: 'Follower', value: formatCount(stats.followers), color: '#993556', bg: '#FBEAF0' },
   ];
 
-  const cardWidth = 132;
+  const cardCount = cards.length;
+  const cardGap = 16;
+  const cardWidth = (width - margin * 2 - cardGap * (cardCount - 1)) / cardCount;
   const cardHeight = 56;
-  const gap = 16;
 
   let cardMarkup = '';
   cards.forEach((card, i) => {
-    const x = 24 + i * (cardWidth + gap);
+    const x = margin + i * (cardWidth + cardGap);
     cardMarkup += `
       <g transform="translate(${x},80)">
         <rect width="${cardWidth}" height="${cardHeight}" rx="8" fill="${card.bg}"/>
@@ -227,11 +230,11 @@ function buildSvg(stats) {
     const rowY = listTop + 24 + i * rowHeight;
     const installsLabel = repo.installs === null ? '–' : formatCount(repo.installs);
     repoRows += `
-      <text x="24" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, nameMaxChars))}</text>
+      <text x="${margin}" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, nameMaxChars))}</text>
       <text x="${starsColX}" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ ${formatCount(repo.stars)}</text>
       <text x="${installsColX}" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">${installsLabel}</text>`;
     if (i < stats.topRepos.length - 1) {
-      repoRows += `<line x1="24" y1="${rowY + 8}" x2="${width - 24}" y2="${rowY + 8}" stroke="#f0f0ec" stroke-width="1"/>`;
+      repoRows += `<line x1="${margin}" y1="${rowY + 8}" x2="${width - margin}" y2="${rowY + 8}" stroke="#f0f0ec" stroke-width="1"/>`;
     }
   });
 
@@ -240,18 +243,18 @@ function buildSvg(stats) {
   <desc>Repos, Sterne, Commits, Follower, Top-Sprachen und Top-5-Repos nach ioBroker-Installationen</desc>
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
 
-  <text x="24" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(stats.name || stats.login)}</text>
-  <text x="24" y="58" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">@${escapeXml(stats.login)}</text>
+  <text x="${margin}" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(stats.name || stats.login)}</text>
+  <text x="${margin}" y="58" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">@${escapeXml(stats.login)}</text>
 
   ${cardMarkup}
 
-  <text x="24" y="168" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top Sprachen</text>
+  <text x="${margin}" y="168" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top Sprachen</text>
   <rect x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="4" fill="#eeeeee"/>
   ${langBars}
-  <text x="${barX + barWidth + 16}" y="${barY + 6}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">${langLabel}</text>
+  <text x="${margin}" y="${langLabelY}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">${langLabel}</text>
 
-  <line x1="24" y1="${listTop - 8}" x2="${width - 24}" y2="${listTop - 8}" stroke="#e5e5e0" stroke-width="1"/>
-  <text x="24" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
+  <line x1="${margin}" y1="${listTop - 8}" x2="${width - margin}" y2="${listTop - 8}" stroke="#e5e5e0" stroke-width="1"/>
+  <text x="${margin}" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
   <text x="${starsColX}" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
   <text x="${installsColX}" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
   ${repoRows}
