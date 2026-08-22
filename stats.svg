@@ -1,0 +1,35 @@
+<svg width="480" height="200" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>GitHub-Stats für simatec</title>
+  <desc>Repos, Sterne, Commits, Follower und Top-Sprachen</desc>
+  <rect x="0.5" y="0.5" width="479" height="199" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
+
+  <text x="24" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">simatec</text>
+  <text x="24" y="58" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">@simatec</text>
+
+  
+      <g transform="translate(24,80)">
+        <rect width="98" height="56" rx="8" fill="#E1F5EE"/>
+        <text x="12" y="24" font-size="11" fill="#1D9E75" font-family="Helvetica, Arial, sans-serif">Repos</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#1D9E75" font-family="Helvetica, Arial, sans-serif">14</text>
+      </g>
+      <g transform="translate(132,80)">
+        <rect width="98" height="56" rx="8" fill="#EEEDFE"/>
+        <text x="12" y="24" font-size="11" fill="#534AB7" font-family="Helvetica, Arial, sans-serif">Sterne</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#534AB7" font-family="Helvetica, Arial, sans-serif">213</text>
+      </g>
+      <g transform="translate(240,80)">
+        <rect width="98" height="56" rx="8" fill="#FAECE7"/>
+        <text x="12" y="24" font-size="11" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">Commits</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">691</text>
+      </g>
+      <g transform="translate(348,80)">
+        <rect width="98" height="56" rx="8" fill="#FBEAF0"/>
+        <text x="12" y="24" font-size="11" fill="#993556" font-family="Helvetica, Arial, sans-serif">Follower</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#993556" font-family="Helvetica, Arial, sans-serif">23</text>
+      </g>
+
+  <text x="24" y="168" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top Sprachen</text>
+  <rect x="24" y="176" width="240" height="8" rx="4" fill="#eeeeee"/>
+  <rect x="24" y="176" width="110" height="8" rx="4" fill="#378ADD"/><rect x="134" y="176" width="106" height="8" rx="4" fill="#EF9F27"/><rect x="240" y="176" width="14" height="8" rx="4" fill="#D85A30"/>
+  <text x="280" y="182" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">TypeScript 46%  ·  JavaScript 44%  ·  HTML 6%</text>
+</svg>
