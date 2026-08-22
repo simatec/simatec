@@ -59,6 +59,39 @@ function graphql(query, variables) {
   });
 }
 
+// Ruft die npm-Downloadzahlen des letzten Monats für ein Paket ab.
+// Gibt null zurück, wenn kein npm-Paket mit diesem Namen existiert
+// (z. B. bei Repos, die nicht als npm-Paket veröffentlicht sind).
+function fetchNpmDownloads(packageName) {
+  const options = {
+    hostname: 'api.npmjs.org',
+    path: `/downloads/point/last-month/${encodeURIComponent(packageName)}`,
+    method: 'GET',
+    headers: { 'User-Agent': 'github-stats-card' },
+  };
+
+  return new Promise((resolve) => {
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => (data += chunk));
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          resolve(null);
+          return;
+        }
+        try {
+          const json = JSON.parse(data);
+          resolve(typeof json.downloads === 'number' ? json.downloads : null);
+        } catch {
+          resolve(null);
+        }
+      });
+    });
+    req.on('error', () => resolve(null));
+    req.end();
+  });
+}
+
 const QUERY = `
 query ($login: String!) {
   user(login: $login) {
@@ -68,6 +101,7 @@ query ($login: String!) {
     repositories(first: 100, ownerAffiliations: OWNER, isFork: false) {
       totalCount
       nodes {
+        name
         stargazerCount
         languages(first: 5, orderBy: { field: SIZE, direction: DESC }) {
           edges {
@@ -124,13 +158,22 @@ function escapeXml(str) {
     .replace(/>/g, '&gt;');
 }
 
+function truncate(str, maxLen) {
+  return str.length > maxLen ? `${str.slice(0, maxLen - 1)}…` : str;
+}
+
 // Feste Farbpalette pro Sprachbalken-Segment (unabhängig von GitHub-eigenen Farben,
 // damit die Karte optisch konsistent im eigenen Design bleibt).
 const LANG_COLORS = ['#378ADD', '#EF9F27', '#D85A30'];
 
 function buildSvg(stats) {
   const width = 480;
-  const height = 200;
+  const rowHeight = 22;
+  const listTop = 208;
+  const height = listTop + 24 + stats.topRepos.length * rowHeight + 16;
+  const scale = 1.35;
+  const displayWidth = Math.round(width * scale);
+  const displayHeight = Math.round(height * scale);
   const barX = 24;
   const barWidth = 240;
   const barY = 176;
@@ -171,9 +214,22 @@ function buildSvg(stats) {
       </g>`;
   });
 
-  return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img">
+  let repoRows = '';
+  stats.topRepos.forEach((repo, i) => {
+    const rowY = listTop + 24 + i * rowHeight;
+    const installsLabel = repo.installs === null ? '–' : `${formatCount(repo.installs)}/Monat`;
+    repoRows += `
+      <text x="24" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, 28))}</text>
+      <text x="336" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ ${formatCount(repo.stars)}</text>
+      <text x="456" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">${installsLabel}</text>`;
+    if (i < stats.topRepos.length - 1) {
+      repoRows += `<line x1="24" y1="${rowY + 8}" x2="456" y2="${rowY + 8}" stroke="#f0f0ec" stroke-width="1"/>`;
+    }
+  });
+
+  return `<svg width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img">
   <title>GitHub-Stats für ${escapeXml(stats.login)}</title>
-  <desc>Repos, Sterne, Commits, Follower und Top-Sprachen</desc>
+  <desc>Repos, Sterne, Commits, Follower, Top-Sprachen und Top-5-Repos mit npm-Installationen</desc>
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="#ffffff" stroke="#e5e5e0" stroke-width="1"/>
 
   <text x="24" y="38" font-size="16" font-weight="600" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(stats.name || stats.login)}</text>
@@ -185,6 +241,12 @@ function buildSvg(stats) {
   <rect x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" rx="4" fill="#eeeeee"/>
   ${langBars}
   <text x="${barX + barWidth + 16}" y="${barY + 6}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">${langLabel}</text>
+
+  <line x1="24" y1="${listTop - 8}" x2="${width - 24}" y2="${listTop - 8}" stroke="#e5e5e0" stroke-width="1"/>
+  <text x="24" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
+  <text x="336" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
+  <text x="456" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
+  ${repoRows}
 </svg>`;
 }
 
@@ -196,14 +258,29 @@ async function main() {
     throw new Error(`Nutzer ${USERNAME} nicht gefunden.`);
   }
 
+  const repoNodes = user.repositories.nodes;
+
+  const topRepoNodes = [...repoNodes]
+    .sort((a, b) => b.stargazerCount - a.stargazerCount)
+    .slice(0, 5);
+
+  const topRepos = await Promise.all(
+    topRepoNodes.map(async (repo) => ({
+      name: repo.name,
+      stars: repo.stargazerCount,
+      installs: await fetchNpmDownloads(repo.name.toLowerCase()),
+    }))
+  );
+
   const stats = {
     login: user.login,
     name: user.name,
     followers: user.followers.totalCount,
     repoCount: user.repositories.totalCount,
-    stars: user.repositories.nodes.reduce((sum, r) => sum + r.stargazerCount, 0),
+    stars: repoNodes.reduce((sum, r) => sum + r.stargazerCount, 0),
     contributions: user.contributionsCollection.contributionCalendar.totalContributions,
-    languages: aggregateLanguages(user.repositories.nodes),
+    languages: aggregateLanguages(repoNodes),
+    topRepos,
   };
 
   const svg = buildSvg(stats);
