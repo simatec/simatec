@@ -167,7 +167,7 @@ function truncate(str, maxLen) {
 const LANG_COLORS = ['#378ADD', '#EF9F27', '#D85A30'];
 
 function buildSvg(stats) {
-  const width = 480;
+  const width = 600;
   const rowHeight = 22;
   const listTop = 208;
   const height = listTop + 24 + stats.topRepos.length * rowHeight + 16;
@@ -175,9 +175,12 @@ function buildSvg(stats) {
   const displayWidth = Math.round(width * scale);
   const displayHeight = Math.round(height * scale);
   const barX = 24;
-  const barWidth = 240;
+  const barWidth = 280;
   const barY = 176;
   const barHeight = 8;
+  const starsColX = width - 160;
+  const installsColX = width - 24;
+  const nameMaxChars = 38;
 
   let langBars = '';
   let cursor = barX;
@@ -199,9 +202,9 @@ function buildSvg(stats) {
     { label: 'Follower', value: formatCount(stats.followers), color: '#993556', bg: '#FBEAF0' },
   ];
 
-  const cardWidth = 98;
+  const cardWidth = 132;
   const cardHeight = 56;
-  const gap = 10;
+  const gap = 16;
 
   let cardMarkup = '';
   cards.forEach((card, i) => {
@@ -219,11 +222,11 @@ function buildSvg(stats) {
     const rowY = listTop + 24 + i * rowHeight;
     const installsLabel = repo.installs === null ? '–' : `${formatCount(repo.installs)}/Monat`;
     repoRows += `
-      <text x="24" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, 28))}</text>
-      <text x="336" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ ${formatCount(repo.stars)}</text>
-      <text x="456" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">${installsLabel}</text>`;
+      <text x="24" y="${rowY}" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">${escapeXml(truncate(repo.name, nameMaxChars))}</text>
+      <text x="${starsColX}" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ ${formatCount(repo.stars)}</text>
+      <text x="${installsColX}" y="${rowY}" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">${installsLabel}</text>`;
     if (i < stats.topRepos.length - 1) {
-      repoRows += `<line x1="24" y1="${rowY + 8}" x2="456" y2="${rowY + 8}" stroke="#f0f0ec" stroke-width="1"/>`;
+      repoRows += `<line x1="24" y1="${rowY + 8}" x2="${width - 24}" y2="${rowY + 8}" stroke="#f0f0ec" stroke-width="1"/>`;
     }
   });
 
@@ -244,8 +247,8 @@ function buildSvg(stats) {
 
   <line x1="24" y1="${listTop - 8}" x2="${width - 24}" y2="${listTop - 8}" stroke="#e5e5e0" stroke-width="1"/>
   <text x="24" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif">Top 5 Repos</text>
-  <text x="336" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
-  <text x="456" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
+  <text x="${starsColX}" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Sterne</text>
+  <text x="${installsColX}" y="${listTop + 8}" font-size="11" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">Installationen</text>
   ${repoRows}
 </svg>`;
 }
@@ -260,17 +263,20 @@ async function main() {
 
   const repoNodes = user.repositories.nodes;
 
-  const topRepoNodes = [...repoNodes]
-    .sort((a, b) => b.stargazerCount - a.stargazerCount)
-    .slice(0, 5);
-
-  const topRepos = await Promise.all(
-    topRepoNodes.map(async (repo) => ({
+  // Installationen (npm-Downloads) für ALLE Repos abrufen, damit die
+  // Sortierung nach Installationen korrekt ist statt nur eine
+  // sternebasierte Vorauswahl zu verfeinern.
+  const reposWithInstalls = await Promise.all(
+    repoNodes.map(async (repo) => ({
       name: repo.name,
       stars: repo.stargazerCount,
       installs: await fetchNpmDownloads(repo.name.toLowerCase()),
     }))
   );
+
+  const topRepos = [...reposWithInstalls]
+    .sort((a, b) => (b.installs ?? -1) - (a.installs ?? -1))
+    .slice(0, 5);
 
   const stats = {
     login: user.login,
