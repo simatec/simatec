@@ -20,7 +20,7 @@
       <g transform="translate(348,80)">
         <rect width="146" height="56" rx="8" fill="#FAECE7"/>
         <text x="12" y="24" font-size="11" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">Commits</text>
-        <text x="12" y="44" font-size="20" font-weight="600" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">699</text>
+        <text x="12" y="44" font-size="20" font-weight="600" fill="#993C1D" font-family="Helvetica, Arial, sans-serif">700</text>
       </g>
       <g transform="translate(510,80)">
         <rect width="146" height="56" rx="8" fill="#FBEAF0"/>
@@ -49,8 +49,8 @@
       <text x="656" y="314" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">1.5k</text><line x1="24" y1="322" x2="656" y2="322" stroke="#f0f0ec" stroke-width="1"/>
       <text x="24" y="336" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.solax</text>
       <text x="500" y="336" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 18</text>
-      <text x="656" y="336" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">611</text><line x1="24" y1="344" x2="656" y2="344" stroke="#f0f0ec" stroke-width="1"/>
+      <text x="656" y="336" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">612</text><line x1="24" y1="344" x2="656" y2="344" stroke="#f0f0ec" stroke-width="1"/>
       <text x="24" y="358" font-size="12" fill="#1a1a1a" font-family="Helvetica, Arial, sans-serif">ioBroker.pegelalarm</text>
       <text x="500" y="358" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">★ 1</text>
-      <text x="656" y="358" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">497</text>
+      <text x="656" y="358" font-size="12" fill="#6b6b66" font-family="Helvetica, Arial, sans-serif" text-anchor="end">496</text>
 </svg>
